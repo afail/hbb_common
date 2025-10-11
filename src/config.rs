@@ -101,7 +101,7 @@ const CHARS: &[char] = &[
 ];
 
 pub const RENDEZVOUS_SERVERS: &[&str] = &["ru.afail.top"];
-pub const RS_PUB_KEY: &str = "ZhQJVVmFxfzzzzvsBTDhAfO07RSPSL4b1KEVOi1EvtA=";
+pub const RS_PUB_KEY: &str = "wjXGMqxDNP7ZjaTlrjdXECZYBT16JCQQAdeA0FVlR7s=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
